@@ -3,13 +3,13 @@
 # init
 pushd "$(dirname $0)" > /dev/null
 
-IMAGE_NAME="pdfix-tesseract-ocr"
+IMAGE_NAME="pdfix-openai-alt-text"
 IMAGE_TAG="latest"
 IMAGE="$IMAGE_NAME:$IMAGE_TAG"
 
 # Initialize variables for arguments
 FORCE_REBUILD=false
-LANG=""
+OPENAI=""
 INPUT_PDF=""
 OUTPUT_PDF=""
 LICENSE_NAME=""
@@ -22,7 +22,7 @@ print_help() {
     echo "Options:"
     echo "  --input <input.pdf>     Path to the input PDF file"
     echo "  --output <output.pdf>   Path the output PDF file"
-    echo "  --lang <lang>           OCR language (default: eng)"
+    echo "  --openai <api_key>      OpenAI api key"
     echo "  --name <name>           License name (running as a Trial if empty)"
     echo "  --key <key>             License key"
     echo "  --build                 Force rebuild of the Docker image"
@@ -33,7 +33,7 @@ print_help() {
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --build) FORCE_REBUILD=true ;;
-        --lang) LANG="$2"; shift ;;
+        --openai) OPENAI="$2"; shift ;;
         --input) INPUT_PDF="$2"; shift ;;
         --output) OUTPUT_PDF="$2"; shift ;;
         --name) LICENSE_NAME="$2"; shift ;;
@@ -100,8 +100,8 @@ docker_cmd="docker run --rm -v \"$INPUT_DIR\":\"$DATA_IN\" -v \"$OUTPUT_DIR\":\"
 
 docker_cmd+=" -it $IMAGE -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\""
 
-if [ -n "$LANG" ]; then
-    docker_cmd+=" --lang \"$LANG\""
+if [ -n "$OPENAI" ]; then
+    docker_cmd+=" --openai \"$OPENAI\""
 fi
 if [ -n "$LICENSE_NAME" ]; then
     docker_cmd+=" --name \"$LICENSE_NAME\""
