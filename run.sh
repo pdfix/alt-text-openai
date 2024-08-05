@@ -14,6 +14,7 @@ INPUT_PDF=""
 OUTPUT_PDF=""
 LICENSE_NAME=""
 LICENSE_KEY=""
+OVERWRITE=false
 
 # Function to print help message
 print_help() {
@@ -25,6 +26,7 @@ print_help() {
     echo "  --openai <api_key>      OpenAI api key"
     echo "  --name <name>           License name (running as a Trial if empty)"
     echo "  --key <key>             License key"
+    echo "  --overwrite             Force overwriting existing alternate text in tags"
     echo "  --build                 Force rebuild of the Docker image"
     echo "  --help                  Display this help message"
 }
@@ -38,6 +40,7 @@ while [[ "$#" -gt 0 ]]; do
         --output) OUTPUT_PDF="$2"; shift ;;
         --name) LICENSE_NAME="$2"; shift ;;
         --key) LICENSE_KEY="$2"; shift ;;
+        --overwrite) OVERWRITE=true ;;
         --help) print_help; exit 0 ;;
         *) echo "Unknown parameter passed: $1"; print_help; exit 1 ;;
     esac
@@ -108,6 +111,9 @@ if [ -n "$LICENSE_NAME" ]; then
 fi
 if [ -n "$LICENSE_KEY" ]; then
     docker_cmd+=" --key \"$LICENSE_KEY\""
+fi
+if [ -n "$OVERWRITE" ]; then
+    docker_cmd+=" --overwrite \"$OVERWRITE\""
 fi
 
 eval $docker_cmd

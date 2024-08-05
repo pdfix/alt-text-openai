@@ -22,6 +22,13 @@ def main():
     parser.add_argument("--name", type=str, default="", help="Pdfix license name")
     parser.add_argument("--key", type=str, default="", help="Pdfix license key")
     parser.add_argument("--openai", type=str, required=True, help="OpenAI API key")
+    parser.add_argument(
+        "--overwrite",
+        type=bool,
+        required=False,
+        default=False,
+        help="Overwrite alternate text if already present in the tag",
+    )
     args = parser.parse_args()
 
     if not args.input or not args.output or not args.openai:
@@ -38,7 +45,14 @@ def main():
 
     if input_file.lower().endswith(".pdf") and output_file.lower().endswith(".pdf"):
         try:
-            alt_text(input_file, output_file, args.name, args.key, args.openai)
+            alt_text(
+                input_file,
+                output_file,
+                args.name,
+                args.key,
+                args.openai,
+                args.overwrite,
+            )
             # print(desc)
         except Exception as e:
             sys.exit("Failed to run alternate description: {}".format(e))
