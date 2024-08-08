@@ -48,8 +48,8 @@ while [[ "$#" -gt 0 ]]; do
 done
 
 # Check required arguments
-if [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ]; then
-    echo "Error: --input and --output arguments are required."
+if [ -z "$INPUT_PDF" ] || [ -z "$OUTPUT_PDF" ] || [ -z "$OPENAI" ]; then
+    echo "Error: --input, --output, --openai arguments are required."
     print_help
     exit 1
 fi
@@ -101,11 +101,8 @@ DATA_OUT="/data_out"
 # Run the Docker container with the specified arguments
 docker_cmd="docker run --rm -v \"$INPUT_DIR\":\"$DATA_IN\" -v \"$OUTPUT_DIR\":\"$DATA_OUT\""
 
-docker_cmd+=" -it $IMAGE -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\""
+docker_cmd+=" -it $IMAGE -i \"$DATA_IN/$INPUT_FILE\" -o \"$DATA_OUT/$OUTPUT_FILE\" --openai \"$OPENAI\""
 
-if [ -n "$OPENAI" ]; then
-    docker_cmd+=" --openai \"$OPENAI\""
-fi
 if [ -n "$LICENSE_NAME" ]; then
     docker_cmd+=" --name \"$LICENSE_NAME\""
 fi
