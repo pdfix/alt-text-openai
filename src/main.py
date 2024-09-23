@@ -59,7 +59,7 @@ def main():
     pars_detect.add_argument("--openai", type=str, required=True, help="OpenAI API key")
     pars_detect.add_argument(
         "--overwrite",
-        type=bool,
+        action="store_true",
         required=False,
         default=False,
         help="Overwrite alternate text if already present in the tag",
