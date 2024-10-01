@@ -1,58 +1,65 @@
 import ctypes
 
-from ai import alt_description
 from pdfixsdk.Pdfix import (
-    PdsStructElement,
     GetPdfix,
-    kPdsStructChildElement,
     PdfDoc,
-    PdsDictionary,
-    PdfRect,
-    kRotate0,
-    PdfPageRenderParams,
-    kImageDIBFormatArgb,
     PdfImageParams,
+    PdfPageRenderParams,
+    PdfRect,
+    PdsDictionary,
+    PdsStructElement,
+    kImageDIBFormatArgb,
     kImageFormatJpg,
+    kPdsStructChildElement,
+    kRotate0,
     kSaveFull,
-    PdfTagsParams,
 )
 
+from ai import alt_description
 
-def renderPage(doc: PdfDoc, pageNum: int, bbox: PdfRect, zoom: float) -> bytearray:
-    page = doc.AcquirePage(pageNum)
-    pageView = page.AcquirePageView(zoom, kRotate0)
 
-    rect = pageView.RectToDevice(bbox)
+def render_page(doc: PdfDoc, page_num: int, bbox: PdfRect, zoom: float) -> bytearray:
+    page = doc.AcquirePage(page_num)
+    page_view = page.AcquirePageView(zoom, kRotate0)
+
+    rect = page_view.RectToDevice(bbox)
 
     # render content
-    renderParams = PdfPageRenderParams()
-    renderParams.matrix = pageView.GetDeviceMatrix()
-    renderParams.clip_box = bbox
-    renderParams.image = GetPdfix().CreateImage(
-        rect.right - rect.left, rect.bottom - rect.top, kImageDIBFormatArgb
+    render_params = PdfPageRenderParams()
+    render_params.matrix = page_view.GetDeviceMatrix()
+    render_params.clip_box = bbox
+    render_params.image = GetPdfix().CreateImage(
+        rect.right - rect.left,
+        rect.bottom - rect.top,
+        kImageDIBFormatArgb,
     )
-    page.DrawContent(renderParams)
+    page.DrawContent(render_params)
 
     # save image to stream and data
     stm = GetPdfix().CreateMemStream()
-    imgParams = PdfImageParams()
-    imgParams.format = kImageFormatJpg
-    renderParams.image.SaveToStream(stm, imgParams)
+    img_params = PdfImageParams()
+    img_params.format = kImageFormatJpg
+    render_params.image.SaveToStream(stm, img_params)
 
     data = bytearray(stm.GetSize())
-    rawData = (ctypes.c_ubyte * len(data)).from_buffer(data)
-    stm.Read(0, rawData, len(data))
+    raw_data = (ctypes.c_ubyte * len(data)).from_buffer(data)
+    stm.Read(0, raw_data, len(data))
 
     # cleanup
     stm.Destroy()
-    renderParams.image.Destroy()
-    pageView.Release()
+    render_params.image.Destroy()
+    page_view.Release()
     page.Release()
 
     return data
 
 
-def updateImageAlt(elem: PdsStructElement, doc: PdfDoc, api_key: str, overwrite: bool):
+def update_image_alt(
+    elem: PdsStructElement,
+    doc: PdfDoc,
+    api_key: str,
+    overwrite: bool,
+) -> None:
     img = "image_" + str(elem.GetObject().GetId()) + ".jpg"
 
     # get image bbox from attributes
@@ -74,23 +81,23 @@ def updateImageAlt(elem: PdsStructElement, doc: PdfDoc, api_key: str, overwrite:
         return
 
     # get the object page number (it may be written in child objects)
-    pageNum = elem.GetPageNumber()
-    if pageNum == -1:
+    page_num = elem.GetPageNumber()
+    if page_num == -1:
         for i in range(0, elem.GetNumChildren()):
-            pageNum = elem.GetChildPageNumber(i)
-            if not pageNum == -1:
+            page_num = elem.GetChildPageNumber(i)
+            if page_num != -1:
                 break
-    if pageNum == -1:
+    if page_num == -1:
         print("[" + img + "] image found but can't determine the page number")
         return
 
-    data = renderPage(doc, pageNum, bbox, 1)
+    data = render_page(doc, page_num, bbox, 1)
     with open(img, "wb") as bf:
         bf.write(data)
 
     response = alt_description(img, api_key)
 
-    print(response.message.content)
+    # print(response.message.content)
     alt = response.message.content
 
     org_alt = elem.GetAlt()
@@ -100,21 +107,22 @@ def updateImageAlt(elem: PdsStructElement, doc: PdfDoc, api_key: str, overwrite:
 
 
 def browse_figure_tags(
-    parent: PdsStructElement, doc: PdfDoc, api_key: str, overwrite: bool
-):
+    parent: PdsStructElement,
+    doc: PdfDoc,
+    api_key: str,
+    overwrite: bool,
+) -> None:
     count = parent.GetNumChildren()
     struct_tree = doc.GetStructTree()
     for i in range(0, count):
-        if not parent.GetChildType(i) == kPdsStructChildElement:
+        if parent.GetChildType(i) != kPdsStructChildElement:
             continue
-        childElem = struct_tree.GetStructElementFromObject(parent.GetChildObject(i))
-        if childElem.GetType(True) == "Figure":
+        child_elem = struct_tree.GetStructElementFromObject(parent.GetChildObject(i))
+        if child_elem.GetType(True) == "Figure":
             # process figure element
-            updateImageAlt(childElem, doc, api_key, overwrite)
+            update_image_alt(child_elem, doc, api_key, overwrite)
         else:
-            browse_figure_tags(childElem, doc, api_key, overwrite)
-
-    return None
+            browse_figure_tags(child_elem, doc, api_key, overwrite)
 
 
 def alt_text(
@@ -125,8 +133,7 @@ def alt_text(
     api_key: str,
     overwrite: bool,
 ) -> None:
-    """
-    Run OCR using Tesseract.
+    """Run OpenAI for alternate text description.
 
     Parameters
     ----------
@@ -142,6 +149,7 @@ def alt_text(
         OpenAI API key.
     overwrite : bool
         Ovewrite alternate text if already present.
+
     """
     pdfix = GetPdfix()
     if pdfix is None:
