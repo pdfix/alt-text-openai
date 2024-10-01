@@ -1,9 +1,10 @@
 import base64
+
 from openai import OpenAI
 
 
 # Function to encode the image
-def encode_image(image_path):
+def encode_image(image_path: str):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode("utf-8")
 
@@ -31,7 +32,7 @@ def alt_description(img_path: str, api_key: str):
                         },
                     },
                 ],
-            }
+            },
         ],
         max_tokens=100,
     )
