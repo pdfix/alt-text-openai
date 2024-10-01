@@ -1,7 +1,7 @@
 # Use the official Debian slim image as a base
-FROM debian:stable-slim
+FROM debian:bookworm-slim
 
-# Install Tesseract OCR and necessary dependencies
+# Install necessary dependencies
 RUN apt-get update && \
     apt-get install -y \
     python3 \
@@ -10,7 +10,7 @@ RUN apt-get update && \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/tesseract-ocr/
+WORKDIR /usr/alt-text-openai/
 
 ENV VIRTUAL_ENV=venv
 
@@ -21,11 +21,11 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 
 # Copy the source code and requirements.txt into the container
-COPY src/ /usr/tesseract-ocr/src/
-COPY requirements.txt /usr/tesseract-ocr/
+COPY src/ /usr/alt-text-openai/src/
+COPY requirements.txt /usr/alt-text-openai/
 
 
 RUN pip install --no-cache-dir -r requirements.txt 
 
 
-ENTRYPOINT ["venv/bin/python3", "src/main.py"]
+ENTRYPOINT ["/usr/alt-text-openai/venv/bin/python3", "/usr/alt-text-openai/src/main.py"]
