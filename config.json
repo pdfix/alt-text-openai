@@ -1,119 +1,55 @@
 {
-  "name": "Alt Text OpenAI",
-  "desc": "Action running Alt Text OpenAI.",
+  "name": "Alt Text",
+  "desc": "Action running Alt Text using OpenAI.",
   "version": {
     "major": 1,
     "minor": 0
   },
   "actions": [
     {
-      "name": "Alt Text OpenAI",
+      "name": "Alt Text",
       "desc": "Generating alternate texts in tags of given PDF document.",
       "path": "user-defined command folder",
       "category": "Accessibility",
-      "program": "run.sh",
       "stdout": "",
       "stderr": "",
       "returnCodes" : [0],
       "configurations": [
         {
+          "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/alt-text-openai:latest --name ${LICENSE_NAME} --key ${LICENSE_KEY} detect -i ${INPUT_PDF} -o ${OUTPUT_PDF} --openai ${OPENAI_KEY}",
           "args": [
             "--input",
             "${INPUT_PDF}",
             "--output",
             "${OUTPUT_PDF}",
-            "--openai",
-            "${OPEN_AI}",
             "--name",
             "${LICENSE_NAME}",
             "--key",
-            "${LICENSE_KEY}"
+            "${LICENSE_KEY}",
+            "--openai",
+            "${OPENAI_KEY}"
           ],
           "name": "Runs with license",
           "desc": "Runs with license"
         },
         {
+          "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/alt-text-openai:latest detect -i ${INPUT_PDF} -o ${OUTPUT_PDF} --openai ${OPENAI_KEY}",
           "args": [
             "--input",
             "${INPUT_PDF}",
             "--output",
             "${OUTPUT_PDF}",
             "--openai",
-            "${OPEN_AI}"
+            "${OPENAI_KEY}"
           ],
           "name": "Runs trial",
           "desc": "Runs trial"
-        },
-        {
-          "args": [
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--openai",
-            "${OPEN_AI}",
-            "--name",
-            "${LICENSE_NAME}",
-            "--key",
-            "${LICENSE_KEY}",
-            "--overwrite"
-          ],
-          "name": "Runs with license and overwrite",
-          "desc": "Runs with license and overwrite"
-        },
-        {
-          "args": [
-            "--build",
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--openai",
-            "${OPEN_AI}"
-          ],
-          "name": "Runs trial with forced build",
-          "desc": "Runs trial with forced build"
-        },
-        {
-          "args": [
-            "--build",
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--openai",
-            "${OPEN_AI}",
-            "--name",
-            "${LICENSE_NAME}",
-            "--key",
-            "${LICENSE_KEY}"
-          ],
-          "name": "Runs with license and forced build",
-          "desc": "Runs with license and forced build"
-        },
-        {
-          "args": [
-            "--build",
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--openai",
-            "${OPEN_AI}",
-            "--name",
-            "${LICENSE_NAME}",
-            "--key",
-            "${LICENSE_KEY}",
-            "--overwrite"
-          ],
-          "name": "Runs with license,overwrite and forced build",
-          "desc": "Runs with license,overwrite and forced build"
-        }
+        },            
       ],
-      "args": [
+       "args": [
         {
           "name": "INPUT_PDF",
-          "desc": "INPUT_PDF file",
+          "desc": "Input PDF file",
           "flags": 2,
           "ext": "pdf",
           "value": ""
@@ -126,21 +62,8 @@
           "value": ""
         },
         {
-          "name": "OPEN_AI",
-          "desc": "OpenAI API key",
-          "type": "string",
-          "value": ""
-        },
-        {
-          "name": "LICENSE_NAME",
-          "desc": "License name.",
-          "type": "string",
-          "value": ""
-        },
-        {
-          "name": "LICENSE_KEY",
-          "desc": "License key.",
-          "type": "string",
+          "name": "OPENAI_KEY",
+          "desc": "OpenAI API key.",
           "value": ""
         }
       ]
