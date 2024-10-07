@@ -1,69 +1,39 @@
 {
-  "name": "Alt Text",
-  "desc": "Action running Alt Text using OpenAI.",
+  "name": "Alt Text with OpenAI",
+  "desc": "Generate image alt texts in PDF document",
   "version": {
     "major": 1,
     "minor": 0
   },
+  "icon": "add_photo_alternate",
   "actions": [
     {
-      "name": "Alt Text",
-      "desc": "Generating alternate texts in tags of given PDF document.",
-      "path": "user-defined command folder",
-      "category": "Accessibility",
-      "stdout": "",
-      "stderr": "",
-      "returnCodes" : [0],
+      "category": "Tags",
       "configurations": [
         {
-          "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/alt-text-openai:latest --name ${LICENSE_NAME} --key ${LICENSE_KEY} detect -i ${INPUT_PDF} -o ${OUTPUT_PDF} --openai ${OPENAI_KEY}",
-          "args": [
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--name",
-            "${LICENSE_NAME}",
-            "--key",
-            "${LICENSE_KEY}",
-            "--openai",
-            "${OPENAI_KEY}"
-          ],
-          "name": "Runs with license",
-          "desc": "Runs with license"
-        },
-        {
-          "program": "docker run --platform linux/amd64 -v ${WORKING_DIRECTORY}:/data -w /data --rm pdfix/alt-text-openai:latest detect -i ${INPUT_PDF} -o ${OUTPUT_PDF} --openai ${OPENAI_KEY}",
-          "args": [
-            "--input",
-            "${INPUT_PDF}",
-            "--output",
-            "${OUTPUT_PDF}",
-            "--openai",
-            "${OPENAI_KEY}"
-          ],
-          "name": "Runs trial",
-          "desc": "Runs trial"
-        },            
+          "program": "docker run --platform linux/amd64 -v ${working_directory}:/data -w /data --rm pdfix/alt-text-openai:latest --name ${license_name} --key ${license_key} detect -i ${input_pdf} -o ${output_pdf} --openai ${openai_key}",
+          "name": "Alt Text with OpenAI",
+          "desc": "Generate image alt texts in PDF document"
+        }   
       ],
        "args": [
         {
-          "name": "INPUT_PDF",
+          "name": "input_pdf",
           "desc": "Input PDF file",
           "flags": 2,
           "ext": "pdf",
           "value": ""
         },
         {
-          "name": "OUTPUT_PDF",
-          "desc": "Output PDF file.",
+          "name": "output_pdf",
+          "desc": "Output PDF file",
           "flags": 4,
           "ext": "pdf",
           "value": ""
         },
         {
-          "name": "OPENAI_KEY",
-          "desc": "OpenAI API key.",
+          "name": "openai_key",
+          "desc": "OpenAI API Key",
           "value": ""
         }
       ]
