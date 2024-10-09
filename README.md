@@ -1,10 +1,10 @@
-# PDFix Alternate Image Description with OpenAI
+# Alt Text Generator OpenAI
 
-Docker image for generating alternate image descriptions using OpenAI and PDFix SDK.
+A Docker image that automatically generates and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI.
 
 ## Table of Contents
 
-- [PDFix Alternate Image Description with OpenAI](#pdfix-alternate-image-description-with-openai)
+- [Alt Text Generator OpenAI](#alt-text-generator-openai)
   - [Table of Contents](#table-of-contents)
   - [Getting Started](#getting-started)
   - [Run using Command Line Interface](#run-using-command-line-interface)
