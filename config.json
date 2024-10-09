@@ -1,8 +1,8 @@
 {
   "actions": [
     {
-      "name": "Alt Text with OpenAI",
-      "desc": "Generate image alt texts in PDF document",
+      "name": "Alt Text Generator OpenAI",
+      "desc": "A Docker image that automatically generates and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI.",
       "version": {
         "major": 1,
         "minor": 0
@@ -13,7 +13,7 @@
         {
           "program": "docker run --platform linux/amd64 -v ${working_directory}:/data -w /data --rm pdfix/alt-text-openai:latest --name ${license_name} --key ${license_key} detect -i ${input_pdf} -o ${output_pdf} --openai ${openai_key}",
           "name": "Alt Text with OpenAI",
-          "desc": "Generate image alt texts in PDF document"
+          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI."
         }   
       ],
        "args": [
