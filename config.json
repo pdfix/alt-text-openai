@@ -32,6 +32,7 @@
           "value": ""
         },
         {
+          "title": "OpenAI API Key",
           "name": "openai_key",
           "desc": "OpenAI API Key",
           "value": ""
