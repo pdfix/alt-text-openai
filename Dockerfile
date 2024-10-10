@@ -23,7 +23,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 # Copy the source code and requirements.txt into the container
 COPY src/ /usr/alt-text-openai/src/
 COPY requirements.txt /usr/alt-text-openai/
-COPY config.json /usr/lang-detect/
+COPY config.json /usr/alt-text-openai/
 
 
 RUN pip install --no-cache-dir -r requirements.txt 
