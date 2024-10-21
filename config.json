@@ -37,6 +37,7 @@
           "title": "OpenAI API Key",
           "name": "openai_key",
           "desc": "OpenAI API Key",
+          "type": "string",
           "value": ""
         }
       ]
