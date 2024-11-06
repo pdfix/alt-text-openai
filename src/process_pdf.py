@@ -81,7 +81,7 @@ def update_image_alt(
         return
 
     # get the object page number (it may be written in child objects)
-    page_num = elem.GetPageNumber()
+    page_num = elem.GetPageNumber(0)
     if page_num == -1:
         for i in range(0, elem.GetNumChildren()):
             page_num = elem.GetChildPageNumber(i)
