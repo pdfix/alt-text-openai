@@ -1,4 +1,5 @@
 import ctypes
+import re
 
 from pdfixsdk.Pdfix import (
     GetPdfix,
@@ -59,6 +60,7 @@ def update_image_alt(
     doc: PdfDoc,
     api_key: str,
     overwrite: bool,
+    lang: str
 ) -> None:
     img = "image_" + str(elem.GetObject().GetId()) + ".jpg"
 
@@ -95,7 +97,7 @@ def update_image_alt(
     with open(img, "wb") as bf:
         bf.write(data)
 
-    response = alt_description(img, api_key)
+    response = alt_description(img, api_key, lang)
 
     # print(response.message.content)
     alt = response.message.content
@@ -109,6 +111,7 @@ def update_image_alt(
 def browse_figure_tags(
     parent: PdsStructElement,
     doc: PdfDoc,
+    tags: str,
     api_key: str,
     overwrite: bool,
     lang: str,
@@ -119,19 +122,20 @@ def browse_figure_tags(
         if parent.GetChildType(i) != kPdsStructChildElement:
             continue
         child_elem = struct_tree.GetStructElementFromObject(parent.GetChildObject(i))
-        if child_elem.GetType(True) == "Figure":
+        if re.match(tags, child_elem.GetType(True)):
             # process figure element
             update_image_alt(child_elem, doc, api_key, overwrite, lang)
         else:
-            browse_figure_tags(child_elem, doc, api_key, overwrite, lang)
+            browse_figure_tags(child_elem, doc, tags, api_key, overwrite, lang)
 
 
 def alt_text(
     input_path: str,
     output_path: str,
+    tags: str,
     license_name: str,
     license_key: str,
-    api_key: str,
+    api_key: str,    
     overwrite: bool,
     lang: str,
 ) -> None:
@@ -176,7 +180,7 @@ def alt_text(
 
     child_elem = struct_tree.GetStructElementFromObject(struct_tree.GetChildObject(0))
     try:
-        browse_figure_tags(child_elem, doc, api_key, overwrite, lang)
+        browse_figure_tags(child_elem, doc, tags, api_key, overwrite, lang)
     except Exception as e:
         raise e
 

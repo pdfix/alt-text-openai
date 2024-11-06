@@ -57,6 +57,7 @@ def main():
     )
 
     pars_detect.add_argument("--openai", type=str, required=True, help="OpenAI API key")
+    pars_detect.add_argument("--tags", type=str, required=True, help="Regular expression defining the tag name")
     pars_detect.add_argument(
         "--overwrite",
         action="store_true",
@@ -103,6 +104,7 @@ def main():
                 alt_text(
                     input_file,
                     output_file,
+                    args.tags,
                     args.name,
                     args.key,
                     args.openai,

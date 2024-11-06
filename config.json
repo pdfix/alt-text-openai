@@ -11,24 +11,14 @@
       "category": "Tags",
       "configurations": [
         {
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\" --lang \"${lang}\"",
-          "name": "Alt Text with OpenAI",
-          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
+          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --tags \"$(tag_name)\" --openai \"${openai_key}\" --lang \"${lang}\"",
+          "name": "Generate Alt Text for all specified Tags with missing alternate description",
+          "desc": "Generate and set the alternate descriptions to listed tags in PDF files using PDFix SDK and OpenAI"
         },
         {
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\" --lang \"${lang}\" --overwrite",
-          "name": "Alt Text with OpenAI",
-          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
-        },       
-        {
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\"",
-          "name": "Alt Text with OpenAI",
-          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
-        },
-        {
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\" --overwrite",
-          "name": "Alt Text with OpenAI",
-          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
+          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --tags \"$(tag_name)\" --openai \"${openai_key}\" --lang \"${lang}\" --overwrite",
+          "name": "Generate Alt Text for all specified Tags",
+          "desc": "Generate and set the alternate descriptions to listed tags in PDF files using PDFix SDK and OpenAI"
         }
       ],
        "args": [
@@ -56,7 +46,14 @@
           "value": ""
         },
         {
-          "title": "Alternate description language",
+          "title": "Tag Name",
+          "name": "tag_name",
+          "desc": "Tag name defined by a regular expression",
+          "type": "string",
+          "value": "Figure|Formula"
+        },
+        {
+          "title": "Language",
           "name": "lang",
           "desc": "Alternate description language",
           "type": "string",
