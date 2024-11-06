@@ -64,6 +64,13 @@ def main():
         default=False,
         help="Overwrite alternate text if already present in the tag",
     )
+    pars_detect.add_argument(
+        "--lang",
+        type=str,
+        required=False,
+        default="en",
+        help="Alternate description laguage",
+    )
 
     try:
         args = parser.parse_args()
@@ -100,6 +107,7 @@ def main():
                     args.key,
                     args.openai,
                     args.overwrite,
+                    args.lang,
                 )
                 # print(desc)
             except Exception as e:

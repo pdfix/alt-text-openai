@@ -9,7 +9,7 @@ def encode_image(image_path: str):
         return base64.b64encode(image_file.read()).decode("utf-8")
 
 
-def alt_description(img_path: str, api_key: str):
+def alt_description(img_path: str, api_key: str, lang: str):
     # Getting the base64 string
     base64_image = encode_image(img_path)
     # print("Using api key: {}".format(api_key))
@@ -23,7 +23,7 @@ def alt_description(img_path: str, api_key: str):
                 "content": [
                     {
                         "type": "text",
-                        "text": "Generate alternate description for the image",
+                        "text": f"Generate alternate description for the image in {lang} language",
                     },
                     {
                         "type": "image_url",

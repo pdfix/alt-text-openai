@@ -111,6 +111,7 @@ def browse_figure_tags(
     doc: PdfDoc,
     api_key: str,
     overwrite: bool,
+    lang: str,
 ) -> None:
     count = parent.GetNumChildren()
     struct_tree = doc.GetStructTree()
@@ -120,9 +121,9 @@ def browse_figure_tags(
         child_elem = struct_tree.GetStructElementFromObject(parent.GetChildObject(i))
         if child_elem.GetType(True) == "Figure":
             # process figure element
-            update_image_alt(child_elem, doc, api_key, overwrite)
+            update_image_alt(child_elem, doc, api_key, overwrite, lang)
         else:
-            browse_figure_tags(child_elem, doc, api_key, overwrite)
+            browse_figure_tags(child_elem, doc, api_key, overwrite, lang)
 
 
 def alt_text(
@@ -132,6 +133,7 @@ def alt_text(
     license_key: str,
     api_key: str,
     overwrite: bool,
+    lang: str,
 ) -> None:
     """Run OpenAI for alternate text description.
 
@@ -149,6 +151,8 @@ def alt_text(
         OpenAI API key.
     overwrite : bool
         Ovewrite alternate text if already present.
+    lang : str
+        Alternate description language.
 
     """
     pdfix = GetPdfix()
@@ -172,7 +176,7 @@ def alt_text(
 
     child_elem = struct_tree.GetStructElementFromObject(struct_tree.GetChildObject(0))
     try:
-        browse_figure_tags(child_elem, doc, api_key, overwrite)
+        browse_figure_tags(child_elem, doc, api_key, overwrite, lang)
     except Exception as e:
         raise e
 

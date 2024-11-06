@@ -11,10 +11,25 @@
       "category": "Tags",
       "configurations": [
         {
+          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\" --lang \"${lang}\"",
+          "name": "Alt Text with OpenAI",
+          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
+        },
+        {
+          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\" --lang \"${lang}\" --overwrite",
+          "name": "Alt Text with OpenAI",
+          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
+        },       
+        {
           "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\"",
           "name": "Alt Text with OpenAI",
           "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
-        }   
+        },
+        {
+          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --openai \"${openai_key}\" --overwrite",
+          "name": "Alt Text with OpenAI",
+          "desc": "Generate and applies alternative image descriptions to PDF files using PDFix SDK and OpenAI"
+        },
       ],
        "args": [
         {
@@ -37,6 +52,13 @@
           "title": "OpenAI API Key",
           "name": "openai_key",
           "desc": "OpenAI API Key",
+          "type": "string",
+          "value": ""
+        },
+        {
+          "title": "Alternate description language",
+          "name": "lang",
+          "desc": "Alternate description language",
           "type": "string",
           "value": ""
         }
