@@ -11,12 +11,7 @@
       "category": "Tags",
       "configurations": [
         {
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --tags \"$(tag_name)\" --openai \"${openai_key}\" --lang \"${lang}\"",
-          "name": "Generate Alt Text for all specified Tags with missing alternate description",
-          "desc": "Generate Alt Text for all specified Tags with missing alternate description"
-        },
-        {
-          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --tags \"$(tag_name)\" --openai \"${openai_key}\" --lang \"${lang}\" --overwrite",
+          "program": "docker run --platform linux/amd64 -v \"${working_directory}:/data\" -w /data --rm pdfix/alt-text-openai:latest --name \"${license_name}\" --key \"${license_key}\" detect -i \"${input_pdf}\" -o \"${output_pdf}\" --tags \"$(tag_name)\" --openai \"${openai_key}\" --lang \"${lang}\" --overwrite \"$(overwrite)\"",
           "name": "Generate Alt Text for all specified Tags",
           "desc": "Generate Alt Text for all specified Tags"
         }
@@ -58,6 +53,13 @@
           "desc": "Alternate description language",
           "type": "string",
           "value": ""
+        },
+        {
+          "title": "Overwrite",
+          "desc": "Replace the alternate text if it exists",
+          "name": "overwrite",
+          "type": "bool",
+          "value": false
         }
       ]
     }
