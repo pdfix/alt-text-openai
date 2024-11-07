@@ -52,7 +52,7 @@
           "name": "lang",
           "desc": "Alternate description language",
           "type": "string",
-          "value": ""
+          "value": "English"
         },
         {
           "title": "Overwrite",
