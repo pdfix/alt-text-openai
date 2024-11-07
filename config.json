@@ -16,7 +16,7 @@
           "desc": "Generate Alt Text for all specified Tags"
         }
       ],
-       "args": [
+      "args": [
         {
           "name": "input_pdf",
           "desc": "Input PDF file",
@@ -52,7 +52,75 @@
           "name": "lang",
           "desc": "Alternate description language",
           "type": "string",
-          "value": "English"
+          "value": "English",
+          "set": [
+            {
+              "value": "English"
+            },
+            {
+              "value": "Deutsch"
+            },
+            {
+              "value": "Español"
+            },
+            {
+              "value": "Français"
+            },
+            {
+              "value": "Italiano"
+            },
+            {
+              "value": "Português"
+            },
+            {
+              "value": "Nederlands"
+            },
+            {
+              "value": "Polski"
+            },
+            {
+              "value": "Русский"
+            },
+            {
+              "value": "中文"
+            },
+            {
+              "value": "日本語"
+            },
+            {
+              "value": "한국어"
+            },
+            {
+              "value": "Türkçe"
+            },
+            {
+              "value": "Svenska"
+            },
+            {
+              "value": "Norsk"
+            },
+            {
+              "value": "Suomi"
+            },
+            {
+              "value": "Čeština"
+            },
+            {
+              "value": "Magyar"
+            },
+            {
+              "value": "Slovenčina"
+            },
+            {
+              "value": "Українська"
+            },
+            {
+              "value": "Ελληνικά"
+            },
+            {
+              "value": "Română"
+            }
+          ]
         },
         {
           "title": "Overwrite",
