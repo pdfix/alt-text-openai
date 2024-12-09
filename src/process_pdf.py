@@ -56,11 +56,7 @@ def render_page(doc: PdfDoc, page_num: int, bbox: PdfRect, zoom: float) -> bytea
 
 
 def update_image_alt(
-    elem: PdsStructElement,
-    doc: PdfDoc,
-    api_key: str,
-    overwrite: bool,
-    lang: str
+    elem: PdsStructElement, doc: PdfDoc, api_key: str, overwrite: bool, lang: str
 ) -> None:
     img = "image_" + str(elem.GetObject().GetId()) + ".jpg"
 
@@ -135,7 +131,7 @@ def alt_text(
     tags: str,
     license_name: str,
     license_key: str,
-    api_key: str,    
+    api_key: str,
     overwrite: bool,
     lang: str,
 ) -> None:

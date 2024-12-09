@@ -1,5 +1,6 @@
 import base64
 
+import httpx
 from openai import OpenAI
 
 
@@ -12,8 +13,10 @@ def encode_image(image_path: str):
 def alt_description(img_path: str, api_key: str, lang: str):
     # Getting the base64 string
     base64_image = encode_image(img_path)
-    # print("Using api key: {}".format(api_key))
-    client = OpenAI(api_key=api_key)
+
+    client = OpenAI(
+        api_key=api_key, timeout=httpx.Timeout(None, connect=10, read=60, write=30)
+    )
 
     response = client.chat.completions.create(
         model="gpt-4o-mini",
