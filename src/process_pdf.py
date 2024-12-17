@@ -1,3 +1,4 @@
+import base64
 import ctypes
 import re
 
@@ -93,7 +94,13 @@ def update_image_alt(
     with open(img, "wb") as bf:
         bf.write(data)
 
-    response = alt_description(img, api_key, lang)
+    # Function to encode the image
+    def encode_image(image_path: str) -> str:
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
+
+    base64_image = encode_image(img)
+    response = alt_description(base64_image, api_key, lang)
 
     # print(response.message.content)
     alt = response.message.content

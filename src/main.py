@@ -4,6 +4,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from process_json import alt_text_json
 from process_pdf import alt_text
 
 
@@ -60,7 +61,7 @@ def main():
     pars_detect.add_argument(
         "--tags",
         type=str,
-        required=True,
+        required=False,
         default="Figure",
         help="Regular expression defining the tag name",
     )
@@ -116,10 +117,17 @@ def main():
                     args.overwrite,
                     args.lang,
                 )
-                # print(desc)
+
             except Exception as e:
                 sys.exit("Failed to run alternate description: {}".format(e))
 
+        elif input_file.lower().endswith(".json") and output_file.lower().endswith(
+            ".json"
+        ):
+            try:
+                alt_text_json(input_file, output_file, args.openai, args.lang)
+            except Exception as e:
+                sys.exit("Failed to run alternate description from json: {}".format(e))
         else:
             print("Input and output file must be PDF")
 
